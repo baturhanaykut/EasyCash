@@ -10,9 +10,7 @@ namespace EasyCash.DTOLayer.Dtos.AppUserDtos
 {
     public class AppUserRegistorDto
     {
-        //[Required(ErrorMessage ="Ad alanı zorunludur") ]
-        //[Display(Name="İsim")]
-        //[MaxLength(30,ErrorMessage ="En fazla 30 Karakter girebilirsiniz.")]
+       
         public string Name { get; set; }
 
         public string Surname { get; set; }
@@ -26,4 +24,3 @@ namespace EasyCash.DTOLayer.Dtos.AppUserDtos
         public string ConfirmPassword { get; set; }
     }
 }
-// ad, soyad, username, mail, password, confirmpassword
