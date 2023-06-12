@@ -15,5 +15,10 @@ namespace EasyCash.EntityLayer.Concrete
         public string CustomerAccountCurrency { get; set; }
 
         public decimal CustomerAccountBalance { get; set; }
+
+        //Navigation Property
+        public int AppUserID { get; set; }
+        public AppUser AppUser { get; set; }
+
     }
 }
