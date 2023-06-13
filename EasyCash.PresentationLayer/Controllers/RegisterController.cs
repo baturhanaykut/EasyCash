@@ -1,8 +1,10 @@
 ﻿using EasyCash.DTOLayer.Dtos.AppUserDtos;
 using EasyCash.EntityLayer.Concrete;
+using MailKit.Net.Smtp;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using MimeKit;
 
 namespace EasyCash.PresentationLayer.Controllers
 {
@@ -26,6 +28,9 @@ namespace EasyCash.PresentationLayer.Controllers
         {
             if (ModelState.IsValid)
             {
+                Random random = new Random();
+                int code;
+                code = random.Next(100000, 1000000);
                 AppUser appUser = new AppUser()
                 {
                     UserName = appUserRegisterDto.UserName,
@@ -34,12 +39,32 @@ namespace EasyCash.PresentationLayer.Controllers
                     Email = appUserRegisterDto.Email,
                     City = "Istanbul",
                     District = "Kadıköy",
-                    ImageUrl = "noImage"
+                    ImageUrl = "noImage",
+                    ConfirmCode = code
                 };
                 var result = await _userManager.CreateAsync(appUser, appUserRegisterDto.Password);
 
                 if (result.Succeeded)
                 {
+                    MimeMessage mimeMessage = new MimeMessage();
+                    MailboxAddress mailboxAddressFrom = new MailboxAddress("Easy Cash Admin", "casheasy0088@gmail.com");
+                    MailboxAddress mailboxAddressTo = new MailboxAddress("User", appUser.Email);
+
+                    mimeMessage.From.Add(mailboxAddressFrom);
+                    mimeMessage.To.Add(mailboxAddressTo);
+                    var bodyBuilder = new BodyBuilder();
+                    bodyBuilder.TextBody = "Kayıt işlemini gerçekleştirmek için onay kodunuz :" + code;
+                    mimeMessage.Body = bodyBuilder.ToMessageBody();
+                    mimeMessage.Subject = "Easy Cash Onay Kodu";
+
+                    SmtpClient client = new SmtpClient();
+                    client.Connect("smtp.gmail.com", 587, false);
+                    client.Authenticate("casheasy0088@gmail.com", "eiskycmtjbhupujy");
+                    client.Send(mimeMessage);
+                    client.Disconnect(true);
+
+                    TempData["Mail"] = appUserRegisterDto.Email;
+
                     return RedirectToAction("Index", "ConfirmMail");
                 }
                 else
