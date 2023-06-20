@@ -1,4 +1,8 @@
+using EasyCash.BusinessLayer.Abstract;
+using EasyCash.BusinessLayer.Concrete;
+using EasyCash.DataAccessLayer.Abstract;
 using EasyCash.DataAccessLayer.Concrete;
+using EasyCash.DataAccessLayer.EntityFramework;
 using EasyCash.EntityLayer.Concrete;
 using EasyCash.PresentationLayer.Models;
 
@@ -9,6 +13,8 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddDbContext<Context>();
 builder.Services.AddIdentity<AppUser, AppRole>().AddEntityFrameworkStores<Context>().AddErrorDescriber<CustomIdentityValidator>();
+builder.Services.AddScoped<ICustomerAccountProcessDal, EfCustomerAccountProcessDal>();
+builder.Services.AddScoped<ICustomerAccountProcessService, CustomerAccountProcessManager>();
 
 var app = builder.Build();
 

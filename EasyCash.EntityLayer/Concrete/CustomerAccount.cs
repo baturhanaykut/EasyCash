@@ -16,6 +16,8 @@ namespace EasyCash.EntityLayer.Concrete
 
         public decimal CustomerAccountBalance { get; set; }
 
+        public string BankBranch { get; set; }
+
         //Navigation Property
         public int AppUserID { get; set; }
         public AppUser AppUser { get; set; }
