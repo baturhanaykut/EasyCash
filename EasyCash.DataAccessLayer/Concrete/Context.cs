@@ -13,7 +13,7 @@ namespace EasyCash.DataAccessLayer.Concrete
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer("Server=.;Database=EasycashDb; integrated security= true;");
+            optionsBuilder.UseSqlServer("Server=BA-LT\\SQLEXPRESS;Database=EasycashDb; integrated security= true;");
         }
         public DbSet<CustomerAccount>  CustomerAccounts { get; set; }
         public DbSet<CustomerAccountProcess> CustomerAccountProcesses { get; set; }
